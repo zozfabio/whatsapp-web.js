@@ -4,7 +4,7 @@
 <head>
   <meta name="generator" content="JSDoc 3.6.11">
   <meta charset="utf-8">
-  <title>whatsapp-web.js 1.22.1 &raquo; Source: authStrategies/BaseAuthStrategy.js</title>
+  <title>whatsapp-web.js 1.22.1 &raquo; Source: webCache/WebCache.js</title>
   <link rel="stylesheet" href="https://brick.a.ssl.fastly.net/Karla:400,400i,700,700i" type="text/css">
   <link rel="stylesheet" href="https://brick.a.ssl.fastly.net/Noto+Serif:400,400i,700,700i" type="text/css">
   <link rel="stylesheet" href="https://brick.a.ssl.fastly.net/Inconsolata:500" type="text/css">
@@ -26,36 +26,23 @@
         </div>
         <div id="jsdoc-main" role="main">
           <header class="page-header">
-            <h1>Source: authStrategies/BaseAuthStrategy.js</h1>
+            <h1>Source: webCache/WebCache.js</h1>
           </header>
           <article>
-            <pre class="prettyprint linenums"><code>&#x27;use strict&#x27;;
-
-/**
- * Base class which all authentication strategies extend
+            <pre class="prettyprint linenums"><code>/**
+ * Default implementation of a web version cache that does nothing.
  */
-class BaseAuthStrategy {
-    constructor() {}
-    setup(client) {
-        this.client &#x3D; client;
-    }
-    async beforeBrowserInitialized() {}
-    async afterBrowserInitialized() {}
-    async onAuthenticationNeeded() {
-        return {
-            failed: false,
-            restart: false,
-            failureEventPayload: undefined
-        };
-    }
-    async getAuthEventPayload() {}
-    async afterAuthReady() {}
-    async disconnect() {}
-    async destroy() {}
-    async logout() {}
+class WebCache {
+    async resolve() { return null; }
+    async persist() { }
 }
 
-module.exports &#x3D; BaseAuthStrategy;</code></pre>
+class VersionResolveError extends Error { }
+
+module.exports &#x3D; {
+    WebCache,
+    VersionResolveError
+};</code></pre>
           </article>
         </div>
       </div>

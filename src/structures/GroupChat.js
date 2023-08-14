@@ -153,8 +153,9 @@ class GroupChat extends Chat {
         const success = await this.client.pupPage.evaluate(async (chatId, description) => {
             const chatWid = window.Store.WidFactory.createWid(chatId);
             let descId = window.Store.GroupMetadata.get(chatWid).descId;
+            let newId = await window.Store.MsgKey.newId();
             try {
-                await window.Store.GroupUtils.setGroupDescription(chatWid, description, window.Store.MsgKey.newId(), descId);
+                await window.Store.GroupUtils.setGroupDescription(chatWid, description, newId, descId);
                 return true;
             } catch (err) {
                 if(err.name === 'ServerStatusCodeError') return false;
@@ -211,6 +212,31 @@ class GroupChat extends Chat {
         
         this.groupMetadata.restrict = adminsOnly;
         return true;
+    }
+
+    /**
+     * Deletes the group's picture.
+     * @returns {Promise<boolean>} Returns true if the picture was properly deleted. This can return false if the user does not have the necessary permissions.
+     */
+    async deletePicture() {
+        const success = await this.client.pupPage.evaluate((chatid) => {
+            return window.WWebJS.deletePicture(chatid);
+        }, this.id._serialized);
+
+        return success;
+    }
+
+    /**
+     * Sets the group's picture.
+     * @param {MessageMedia} media
+     * @returns {Promise<boolean>} Returns true if the picture was properly updated. This can return false if the user does not have the necessary permissions.
+     */
+    async setPicture(media) {
+        const success = await this.client.pupPage.evaluate((chatid, media) => {
+            return window.WWebJS.setPicture(chatid, media);
+        }, this.id._serialized, media);
+
+        return success;
     }
 
     /**
